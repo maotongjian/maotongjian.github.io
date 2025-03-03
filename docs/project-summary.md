@@ -1,3 +1,7 @@
+## 项目贡献 git shortlog -sn
+
+![图片](/git-shortlog.png "shortlog")
+
 ## vue2 项目代码风格 demo
 
 ```js
@@ -1123,7 +1127,3 @@ AITry.propTypes = {
 
 export default memo(AITry);
 ```
-
-## 项目贡献 git shortlog -sn
-
-![图片](/git-shortlog.png "shortlog")

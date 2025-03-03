@@ -47,6 +47,7 @@ export default defineConfig({
         /* prettier-ignore */
         items: [
           { text: "近期项目总结概述", link: "/project-summary" },
+          { text: "近期项目性能优化方案", link: "/optimization-plan" },
           { text: "后台管理系统重构框架选型分析", link: "/framework-selection" },
         ],
       },
