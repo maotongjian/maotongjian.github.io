@@ -131,3 +131,92 @@ npx lint-staged
 ```
 
 - 验证上述配置在 git 中自动执行失败，暂不执行 commit 自动格式化和 eslint 修复
+
+## 移动端适配
+
+安装 postcss-pxtorem, 在根目录下配置 postcss.config.js, 设置 html 根字体大小为 10vw，也可通过 JS 监听屏幕的宽度动态设置根字体大小
+
+```js
+module.exports = {
+  plugins: {
+    "postcss-pxtorem": {
+      rootValue: 36, // 换算基数，根据设计稿的实际尺寸调整
+      mediaQuery: false, // 是否在媒体查询的css代码中也进行转换，默认false
+      exclude: /(node_module)/, // 设置忽略文件，用正则做目录名匹配
+      propList: ["*"], // 指定转换的css属性的单位，*代表全部css属性的单位都进行转换
+      replace: true, // 是否转换后直接更换属性值
+      minPixelValue: 1, // 默认值1，小于或等于1px则不进行转换
+    },
+  },
+};
+```
+
+## axios 封装
+
+```js
+import axios from "axios";
+
+// 创建 axios 实例
+const service = axios.create({
+  baseURL: "https://api.example.com",
+  timeout: 10000,
+});
+
+// 请求拦截器
+service.interceptors.request.use(
+  (config) => {
+    // 可以在这里加入 token 或其他需要在请求头中添加的信息
+    const token = localStorage.getItem("token");
+    if (token) {
+      config.headers["Authorization"] = `Bearer ${token}`;
+    }
+    // 例如：显示加载动画
+    // showLoading();
+    return config;
+  },
+  (error) => {
+    // 请求错误处理
+    console.error("请求错误：", error);
+    return Promise.reject(error);
+  }
+);
+
+// 响应拦截器
+service.interceptors.response.use(
+  (response) => {
+    // 请求成功时直接返回响应数据
+    return response.data;
+  },
+  (error) => {
+    // 响应错误处理
+    if (error.response) {
+      // 服务器有返回错误码
+      switch (error.response.status) {
+        case 401:
+          console.error("未授权，请重新登录");
+          // 可以执行退出登录、重定向等操作
+          break;
+        case 404:
+          console.error("请求地址不存在");
+          break;
+        case 500:
+          console.error("服务器内部错误");
+          break;
+        default:
+          console.error(
+            `请求出错: ${error.response.data.message || "未知错误"}`
+          );
+      }
+    } else if (error.request) {
+      // 请求已发出，但没有收到响应
+      console.error("请求无响应，请检查网络连接");
+    } else {
+      // 其他错误
+      console.error("错误信息：", error.message);
+    }
+    return Promise.reject(error);
+  }
+);
+
+export default service;
+```
