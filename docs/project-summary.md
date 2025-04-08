@@ -1,6 +1,6 @@
 ## 项目贡献 git shortlog -sn
 
-![图片](/git-shortlog.png "shortlog")
+![图片](/git-shortlog.png 'shortlog')
 
 ## vue2 项目代码风格 demo
 
@@ -806,40 +806,40 @@ export default {
 ## react 项目代码风格 demo
 
 ```js
-import styles from "./index.module.scss";
-import classNames from "classnames/bind";
+import styles from './index.module.scss';
+import classNames from 'classnames/bind';
 
-import PropTypes from "prop-types";
-import { useTranslation } from "next-i18next";
-import { useState, memo } from "react";
-import { Upload } from "antd";
-import { SpinLoading, DotLoading } from "antd-mobile";
-import { useStore } from "react-redux";
+import PropTypes from 'prop-types';
+import { useTranslation } from 'next-i18next';
+import { useState, memo } from 'react';
+import { Upload } from 'antd';
+import { SpinLoading, DotLoading } from 'antd-mobile';
+import { useStore } from 'react-redux';
 
-import useToast from "~hooks/useToast";
-import useDynamicCurrency from "~hooks/useDynamicCurrency";
+import useToast from '~hooks/useToast';
+import useDynamicCurrency from '~hooks/useDynamicCurrency';
 
-import gtmCode from "~utils/gaGTMCode";
+import gtmCode from '~utils/gaGTMCode';
 
-import { getAIImageApi } from "~apis/aitry";
+import { getAIImageApi } from '~apis/aitry';
 
-import BDialog from "~components/BDialog";
-import GImg from "~components/GImg";
-import BButton from "~components/Base/BButton";
+import BDialog from '~components/BDialog';
+import GImg from '~components/GImg';
+import BButton from '~components/Base/BButton';
 
 const cn = classNames.bind(styles);
 const { Dragger } = Upload;
 const draggerProps = {
-  name: "file",
-  accept: ".jpg,.jpeg,.png",
+  name: 'file',
+  accept: '.jpg,.jpeg,.png',
   maxCount: 1,
   multiple: false,
   showUploadList: false,
-  className: cn("dragger-container"),
+  className: cn('dragger-container'),
 };
 
 const AITry = ({ productInfo = {} }) => {
-  const { t: $t } = useTranslation("productDetail");
+  const { t: $t } = useTranslation('productDetail');
   const showToast = useToast();
   const clientContext = { store: useStore() };
   const { $currency } = useDynamicCurrency();
@@ -848,9 +848,9 @@ const AITry = ({ productInfo = {} }) => {
   const [showAITry, setShowAITry] = useState(false);
   const [uploadStep, setUploadStep] = useState(1);
   const [fileLoading, setFileLoading] = useState(false);
-  const [uploadImage, setUploadImage] = useState({ file: {}, src: "" });
+  const [uploadImage, setUploadImage] = useState({ file: {}, src: '' });
   const [generateLoading, setGenerateLoading] = useState(false);
-  const [generateImageSrc, setGenerateImageSrc] = useState("");
+  const [generateImageSrc, setGenerateImageSrc] = useState('');
 
   const openAITry = () => {
     setShowAITry(true);
@@ -873,14 +873,14 @@ const AITry = ({ productInfo = {} }) => {
     setFileLoading(false);
     if (!generateLoading) {
       setUploadStep(1);
-      setUploadImage({ file: {}, src: "" });
+      setUploadImage({ file: {}, src: '' });
     }
   };
 
   const validateFileFormat = (file) => {
-    const acceptType = ["image/jpg", "image/jpeg", "image/gif", "image/png"];
+    const acceptType = ['image/jpg', 'image/jpeg', 'image/gif', 'image/png'];
     if (!acceptType.includes(file.type)) {
-      showToast.fail($t("Support JPG"));
+      showToast.fail($t('Support JPG'));
       return false;
     }
     return true;
@@ -889,7 +889,7 @@ const AITry = ({ productInfo = {} }) => {
   const validateFileSize = (file) => {
     const limitSize = 1024 * 1024 * 10;
     if (file.size > limitSize) {
-      showToast.fail($t("Image must smaller than 10MB"));
+      showToast.fail($t('Image must smaller than 10MB'));
       return false;
     }
     return true;
@@ -919,21 +919,21 @@ const AITry = ({ productInfo = {} }) => {
     try {
       setGenerateLoading(true);
       const formData = new FormData();
-      formData.append("id", productInfo.product_id);
-      formData.append("file", uploadImage.file);
+      formData.append('id', productInfo.product_id);
+      formData.append('file', uploadImage.file);
       const res = await getAIImageApi(clientContext, formData);
       if (~~res.code === 200) {
         const generateImageSrc = res.data;
         setGenerateImageSrc(generateImageSrc);
         setUploadStep(3);
       } else {
-        showToast.fail($t("Generation failed"));
+        showToast.fail($t('Generation failed'));
       }
       setGenerateLoading(false);
     } catch (error) {
-      console.log("AI Try error", error);
+      console.log('AI Try error', error);
       setGenerateLoading(false);
-      showToast.fail($t("Generation failed"));
+      showToast.fail($t('Generation failed'));
     }
   };
 
@@ -948,68 +948,66 @@ const AITry = ({ productInfo = {} }) => {
         visible={showAITry}
         onClose={handleCloseAITryDialog}
         changeCenterPopupMountNode
-        title={$t("AI Try On")}
+        title={$t('AI Try On')}
         titlePosition="center"
-        bodyClassName={cn("try-dialog-container")}
+        bodyClassName={cn('try-dialog-container')}
         destroyOnClose
         onAfterClose={handleAfterClose}
         afterClose={handleAfterClose}
       >
-        <div className={cn("try-main")}>
+        <div className={cn('try-main')}>
           {uploadStep !== 3 && !generateLoading && (
-            <p className={cn("upload-tip")}>
-              {$t("Upload an upper body photo")}
-            </p>
+            <p className={cn('upload-tip')}>{$t('Upload an upper body photo')}</p>
           )}
           {uploadStep === 1 && (
             <>
-              <div className={cn("image-true")}>
+              <div className={cn('image-true')}>
                 <GImg
-                  className={cn("try_1")}
+                  className={cn('try_1')}
                   src="/images/default/AI-Try/ai_try_1.png"
                   width={260}
                   height={387}
-                  alt={$t("Correct Example Image")}
+                  alt={$t('Correct Example Image')}
                 />
               </div>
-              <div className={cn("wrong-title")}>
-                <span className={cn("title")}>{$t("Wrong Example")}</span>
+              <div className={cn('wrong-title')}>
+                <span className={cn('title')}>{$t('Wrong Example')}</span>
               </div>
-              <div className={cn("image-false")}>
-                <div className={cn("image-container")}>
+              <div className={cn('image-false')}>
+                <div className={cn('image-container')}>
                   <GImg
-                    className={cn("try-false")}
+                    className={cn('try-false')}
                     src="/images/default/AI-Try/ai_try_2.png"
                     width={240}
                     height={355}
-                    alt={$t("Error Example Image 1")}
+                    alt={$t('Error Example Image 1')}
                   />
-                  <span className={cn("title")}>{$t("Back photo")}</span>
+                  <span className={cn('title')}>{$t('Back photo')}</span>
                 </div>
-                <div className={cn("image-container")}>
+                <div className={cn('image-container')}>
                   <GImg
-                    className={cn("try-false")}
+                    className={cn('try-false')}
                     src="/images/default/AI-Try/ai_try_3.png"
                     width={240}
                     height={354}
-                    alt={$t("Error Example Image 2")}
+                    alt={$t('Error Example Image 2')}
                   />
-                  <span className={cn("title")}>{$t("Side view photo")}</span>
+                  <span className={cn('title')}>{$t('Side view photo')}</span>
                 </div>
-                <div className={cn("image-container")}>
+                <div className={cn('image-container')}>
                   <GImg
-                    className={cn("try-false")}
+                    className={cn('try-false')}
                     src="/images/default/AI-Try/ai_try_4.png"
                     width={240}
                     height={356}
-                    alt={$t("Error Example Image 3")}
+                    alt={$t('Error Example Image 3')}
                   />
-                  <span className={cn("title")}>{$t("Group photo")}</span>
+                  <span className={cn('title')}>{$t('Group photo')}</span>
                 </div>
               </div>
               <BButton
-                className={cn("upload-btn")}
-                text={$t("Upload Photo")}
+                className={cn('upload-btn')}
+                text={$t('Upload Photo')}
                 btnSize="large"
                 onClick={handleUploadPhoto}
               />
@@ -1017,59 +1015,46 @@ const AITry = ({ productInfo = {} }) => {
           )}
           {uploadStep === 2 && (
             <>
-              {fileLoading && <SpinLoading style={{ "--size": "40px" }} />}
-              {!fileLoading && uploadImage.src === "" && (
+              {fileLoading && <SpinLoading style={{ '--size': '40px' }} />}
+              {!fileLoading && uploadImage.src === '' && (
                 <Dragger {...draggerProps} customRequest={handleCustomRequest}>
-                  {uploadImage.src === "" && (
+                  {uploadImage.src === '' && (
                     <>
-                      <p
-                        className={`ant-upload-drag-icon ${cn(
-                          "image-icon-container"
-                        )}`}
-                      >
+                      <p className={`ant-upload-drag-icon ${cn('image-icon-container')}`}>
                         <i className={`iconfont`}>&#xe62c;</i>
                       </p>
-                      <p className="ant-upload-text">
-                        {$t("Click or drag to upload photo")}
-                      </p>
-                      <p className="ant-upload-hint">{$t("Supports jpg")}</p>
+                      <p className="ant-upload-text">{$t('Click or drag to upload photo')}</p>
+                      <p className="ant-upload-hint">{$t('Supports jpg')}</p>
                     </>
                   )}
                 </Dragger>
               )}
-              {!fileLoading && uploadImage.src !== "" && (
+              {!fileLoading && uploadImage.src !== '' && (
                 <>
                   <div
-                    className={cn("image-container", {
-                      "image-loading": generateLoading,
+                    className={cn('image-container', {
+                      'image-loading': generateLoading,
                     })}
                   >
-                    <GImg
-                      className={cn("upload-image")}
-                      src={uploadImage.src}
-                    />
+                    <GImg className={cn('upload-image')} src={uploadImage.src} />
                   </div>
                   {generateLoading && (
-                    <p className={cn("loading-tip")}>
-                      {`${$t("Loading")}`}
+                    <p className={cn('loading-tip')}>
+                      {`${$t('Loading')}`}
                       <DotLoading color="#000" />
                     </p>
                   )}
                   {!generateLoading && (
-                    <div className={cn("operation")}>
+                    <div className={cn('operation')}>
                       <Upload
-                        className={cn("reupload")}
+                        className={cn('reupload')}
                         beforeUpload={handleCustomRequest}
                         accept=".jpg,.jpeg,.png"
                         maxCount={1}
                       >
-                        <BButton text={$t("Reupload")} btnSize="large" />
+                        <BButton text={$t('Reupload')} btnSize="large" />
                       </Upload>
-                      <BButton
-                        text={$t("Generate")}
-                        btnSize="large"
-                        onClick={handleGenerate}
-                      />
+                      <BButton text={$t('Generate')} btnSize="large" onClick={handleGenerate} />
                     </div>
                   )}
                 </>
@@ -1077,22 +1062,17 @@ const AITry = ({ productInfo = {} }) => {
             </>
           )}
           {uploadStep === 3 && (
-            <div className={cn("generate-content")}>
+            <div className={cn('generate-content')}>
               {Boolean(generateImageSrc) && (
-                <GImg
-                  className={cn("upload-image", "generate-image")}
-                  src={generateImageSrc}
-                />
+                <GImg className={cn('upload-image', 'generate-image')} src={generateImageSrc} />
               )}
-              <p className={cn("product-title")}>{productInfo.title}</p>
-              <p className={cn("product-price")}>
-                {productInfo.is_seckill
-                  ? $currency(productInfo.seckill.price)
-                  : $currency(productInfo.price)}
+              <p className={cn('product-title')}>{productInfo.title}</p>
+              <p className={cn('product-price')}>
+                {productInfo.is_seckill ? $currency(productInfo.seckill.price) : $currency(productInfo.price)}
               </p>
               <BButton
-                className={cn("shopping-now")}
-                text={$t("Shopping Now")}
+                className={cn('shopping-now')}
+                text={$t('Shopping Now')}
                 btnSize="large"
                 onClick={handleClickAITryShoppingNow}
               />
@@ -1106,13 +1086,13 @@ const AITry = ({ productInfo = {} }) => {
   return (
     renderAITry && (
       <>
-        <div className={cn("ai-try")}>
-          <div className={cn("ai-try-on")} onClick={openAITry}>
-            <i className={cn("iconfont", "close")} onClick={handleDestroy}>
+        <div className={cn('ai-try')}>
+          <div className={cn('ai-try-on')} onClick={openAITry}>
+            <i className={cn('iconfont', 'close')} onClick={handleDestroy}>
               &#xe640;
             </i>
-            <span className={cn("text")}>{$t("AI Try On")}</span>
-            <i className={cn("iconfont", "clothing")}>&#xe7cc;</i>
+            <span className={cn('text')}>{$t('AI Try On')}</span>
+            <i className={cn('iconfont', 'clothing')}>&#xe7cc;</i>
           </div>
         </div>
         {renderAITryDialog()}

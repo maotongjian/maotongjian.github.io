@@ -1,0 +1,12 @@
+# 忽略构建输出
+dist
+build
+   
+# 忽略依赖
+node_modules
+   
+# 忽略特定文件
+docs/.vitepress/cache
+
+# 忽略其他
+.github
