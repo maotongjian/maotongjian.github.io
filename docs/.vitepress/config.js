@@ -59,7 +59,7 @@ export default defineConfig({
           },
           { text: '基于vue2和vite快速搭建一个轻量化的h5项目', link: '/build' },
           {
-            text: '记录使用vite创建 react + typescript 项目的过程',
+            text: '基于react、ts和vite搭建项目',
             link: '/vite-react',
           },
         ],
